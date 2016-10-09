@@ -1,5 +1,6 @@
 #!/bin/bash
 #github: RudolfBSuguitan
+#Please read ReadMe file
 clear
 cd "/home/rudolf"
 echo "Welcome $(whoami)"
