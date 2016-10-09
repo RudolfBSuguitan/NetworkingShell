@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#github: RudolfBSuguitan
 clear
 cd "/home/rudolf"
 echo "Welcome $(whoami)"
