@@ -1,0 +1,23 @@
+#!/bin/bash
+
+clear
+cd "/home/rudolf"
+echo "Welcome $(whoami)"
+
+i=1 #Used to make an infinite while loop to keep the program runnning
+while [ $i -eq 1 ]
+do
+        read input
+        if test $input = "hello"
+        then
+                clear
+                echo -e "$(date)"
+                echo -e "$(pwd)"
+        elif test $input = "exit"
+        then
+                echo -e "Bye"
+                return
+        else
+                echo -e "it is not working"
+        fi
+done
