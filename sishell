@@ -1,24 +1,28 @@
 #!/bin/bash
 #github: RudolfBSuguitan
 #Please read ReadMe file
+
+INPUT
+
 clear
 cd "/home/rudolf"
-echo "Welcome $(whoami)"
+echo -e "Welcome $(whoami)"
+echo -e "This is custom shell. Please enter the command inh for help"
 
 i=1 #Used to make an infinite while loop to keep the program runnning
 while [ $i -eq 1 ]
 do
-        read input
-        if test $input = "hello"
-        then
-                clear
-                echo -e "$(date)"
-                echo -e "$(pwd)"
-        elif test $input = "exit"
-        then
-                echo -e "Bye"
-                return
-        else
-                echo -e "it is not working"
-        fi
+	echo -n ">"
+        read INPUT
+
+	case $INPUT in
+                "hello")
+			clear
+			echo -e "$(date)";;
+                "exit") clear
+			echo "Good Bye"
+			exit;;
+                *) ;;
+        esac
+
 done
