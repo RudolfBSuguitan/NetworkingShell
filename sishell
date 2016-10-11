@@ -1,28 +1,37 @@
 #!/bin/bash
 #github: RudolfBSuguitan
 #Please read ReadMe file
+#etc/password to change shell
+#use -m flag to create home directory
 
 INPUT
 
+helpFunc(){
+	echo -e "\nHelp goes here...\n"
+}
+
 clear
 cd "/home/rudolf"
-echo -e "Welcome $(whoami)"
-echo -e "This is custom shell. Please enter the command inh for help"
+echo -e "\nWelcome $(whoami)!"
+echo -e "This is your custom shell. Please enter the command helo for help\n"
 
 i=1 #Used to make an infinite while loop to keep the program runnning
 while [ $i -eq 1 ]
 do
-	echo -n ">"
+	echo -n ">>"
         read INPUT
 
 	case $INPUT in
-                "hello")
-			clear
-			echo -e "$(date)";;
-                "exit") clear
-			echo "Good Bye"
+                "test")
+			echo -e "\nTodays date is: $(date)\n";;
+		"help")
+			helpFunc;;
+		"clear")
+			clear;;
+                "exit")
+			echo -e "\nGoodbye\n"
 			exit;;
-                *) ;;
+                *);;
         esac
 
 done
