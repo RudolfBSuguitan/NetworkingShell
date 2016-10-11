@@ -83,7 +83,7 @@ do
 		"pwNt")
 			echo -e "\nCurrent working directory: $(pwd)\n";;
 		"ls")
-			ls;;
+			echo -e "\n$(ls)\n";;
 		"mkdir")
 			echo -e -n "\nFolder name: "
 			read FNAME
@@ -96,7 +96,7 @@ do
                 "exit")
 			echo -e "\nGoodbye\n"
 			exit;;
-                *);;
+                *) echo -e "\nERROR>UNKNOWN COMMAND: $INPUT\n";;
         esac
 
 done
