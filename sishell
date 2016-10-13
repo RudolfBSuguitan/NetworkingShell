@@ -64,6 +64,16 @@ do
 		then
 			INPUT="pw"
 		fi
+	elif [[ "${INPUT_ARR[0]}" = "ifc" ]];
+	then
+		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
+		then
+			INPUT="ifc_set"
+		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
+		then
+                	INPUT="ifc_first"
+		fi
+
 	fi
 
 
@@ -76,7 +86,7 @@ do
 			pwdFunc;;
 		"pw")
 			echo -e "\nCurrent working directory: $(type pwd)\n";;
-		"ifc")
+		"ifc_first")
 			echo -e "\n$(ifconfig eth0)\n";;
 		"show")
 			echo -e "\n$(ls)\n";;
