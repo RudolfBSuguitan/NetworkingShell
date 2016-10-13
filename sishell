@@ -10,8 +10,13 @@ INPUT_ARR
 PWD_ARR="-L -P --help --version"
 PWD_ARR2=( $PWD_ARR )
 
-helpFunc(){
-	echo -e "\nHelp goes here...\n"
+funcHelp(){
+	echo -e "\n>> pw"
+	echo -e "\tThis command prints your current working directory.\n\tYou are restricted to use any tail.\n\tIf tail is provided, it will be ignored.\n"
+	echo -e "\n>> close"
+	echo -e "\tThis command will close your terminal or\n\tlog you out if other user's account is being used\n"
+	echo -e "\n>> dt"
+	echo -e "\tDisplays current date and time in this\n\tformat: year, month, day, hour, minutes, seconds\n"
 }
 
 pwdFunc(){
@@ -30,39 +35,25 @@ pwdFunc(){
                         fi
 		done
 	done
-
-
-	#for ((x=0; x<"${#PWD_ARR2[@]}"; x++))
-	#do
-		#for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
-        	#do
-    			#if [[ "${PWD_ARR2[x]}" == "${INPUT_ARR[$z]}" ]];
-			#then
-				#echo -e "\nYou have no permission to use tail. Tail ignored."
-        			#echo -e "\nCurrent working directory: $(pwd)\n"
-			#elif [[ -z "${INPUT_ARR[$z]}" ]];
-			#then
-				#echo -e "\nCurrent working directory: $(pwd)\n"
-				#break
-    			#else
-				#echo -e "\nERROR>UNKNOWN COMMAND: ${INPUT_ARR[$z]}\n"
-				#break
-			#fi
-		#done
-	#done
 }
 
 clear
 cd "/home/$(whoami)"
 echo -e "\nWelcome $(whoami)!"
-echo -e "This is your custom shell. Please enter the command helo for help\n"
+echo -e "This is your custom shell"
+echo -e "For help, enter command: how\n"
 
 i=1 #Used to make an infinite while loop to keep the program runnning
 while [ $i -eq 1 ]
 do
 	echo -n "$(whoami):$(pwd)> "
 	read INPUT
-	INPUT_ARR=( $INPUT )
+	if [[ -z $INPUT ]];
+	then
+		INPUT="none"
+	else
+		INPUT_ARR=( $INPUT )
+	fi
 
 	if [[ "${INPUT_ARR[0]}" = "pw" ]];
 	then
@@ -75,9 +66,12 @@ do
 		fi
 	fi
 
+
 	case $INPUT in
-                "dt")
-			echo -e "\nTodays date is: $(date)\n";;
+                "how")
+			funcHelp;;
+		"dt")
+			echo -e "\nTodays date is: $(date +%Y%m%d%H%M%S)\n";;
 		"pw_tail")
 			pwdFunc;;
 		"pw")
@@ -90,14 +84,14 @@ do
 			echo -e -n "\nFolder name: "
 			read FNAME
 			mkdir $FNAME;;
-		"desc")
-			helpFunc;;
-		"clear")
+		"clr")
 			clear;;
+		"none")
+			echo -n "";;
                 "close")
 			echo -e "\nGoodbye\n"
 			exit;;
-                *) echo -e "\nERROR>UNKNOWN COMMAND: $INPUT\n";;
+                *) echo -e "\nERROR>UNKNOWN COMMAND: $INPUT\nFor help, enter command: how\n";;
         esac
 
 done
