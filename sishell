@@ -68,32 +68,33 @@ do
 	then
 		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
 		then
-			INPUT="pw"
+			INPUT="pw_tail"
 		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
 		then
-			INPUT="pwNt"
+			INPUT="pw"
 		fi
 	fi
 
 	case $INPUT in
-                "test")
+                "dt")
 			echo -e "\nTodays date is: $(date)\n";;
-		"pw")
+		"pw_tail")
 			pwdFunc;;
-		"pwNt")
-			echo -e "\nCurrent working directory: $(pwd)\n";;
-		"ls")
+		"pw")
+			echo -e "\nCurrent working directory: $(type pwd)\n";;
+		"ifc")
+			echo -e "\n$(ifconfig eth0)\n";;
+		"show")
 			echo -e "\n$(ls)\n";;
-		"mkdir")
+		"n")
 			echo -e -n "\nFolder name: "
 			read FNAME
-			mkdir $FNAME
-			clear;;
-		"help")
+			mkdir $FNAME;;
+		"desc")
 			helpFunc;;
 		"clear")
 			clear;;
-                "exit")
+                "close")
 			echo -e "\nGoodbye\n"
 			exit;;
                 *) echo -e "\nERROR>UNKNOWN COMMAND: $INPUT\n";;
