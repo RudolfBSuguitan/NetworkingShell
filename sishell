@@ -27,7 +27,7 @@ funcHelp(){
 funcPwd(){
 	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
 	do
-		if test "${INPUT_ARR[$z]}"=="-L" -o "${INPUT_ARR[$z]}"=="-P" -o "${INPUT_ARR[$z]}"=="--help" -o "${INPUT_ARR[$z]}"=="--version"
+		if test "${INPUT_ARR[$z]}" == "-L" -o "${INPUT_ARR[$z]}" == "-P" -o "${INPUT_ARR[$z]}" == "--help" -o "${INPUT_ARR[$z]}" == "--version"
 		then
 			echo -e "\nYou have no permission to use tail. Tail ignored."
                         echo -e "Current working directory: $(pwd)\n"
@@ -62,23 +62,19 @@ funcIfc(){
 }
 
 funcInput(){
-	if [[ "${INPUT_ARR[0]}" = "pw" ]];
+	if test "${INPUT_ARR[0]}" == "pw"
         then
-                if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
+                if test "${#INPUT_ARR[@]}" -gt "1"
                 then
-                        INPUT="pw_tail"
-                elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
-                then
-                        INPUT="pw"
+			funcPwd
+			INPUT="none"
                 fi
-        elif [[ "${INPUT_ARR[0]}" = "ifc" ]];
+        elif test "${INPUT_ARR[0]}" == "ifc"
         then
-                if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
+                if test "${#INPUT_ARR[@]}" -gt "1"
                 then
-                        INPUT="ifc_tail"
-                elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
-                then
-                        INPUT="ifc_first"
+			funcIfc
+			INPUT="none"
                 fi
 	 fi
 }
@@ -93,34 +89,33 @@ echo -e "For help, enter command: how\n"
 i=1 #Used to make an infinite while loop to keep the program runnning
 while [ $i -eq 1 ]
 do
-	echo -n "$(whoami):$(pwd)> "
-	
+	echo -n "$(whoami)@$(pwd):$> "
+
 	read INPUT
 
-	if [[ -z $INPUT ]];
+	if [[ -z $INPUT ]]
 	then
 		INPUT="none"
 	else
 		INPUT_ARR=( $INPUT )
+		funcInput
 	fi
-
-	funcInput
 
 	case $INPUT in
                 "how")
 			funcHelp;;
 		"dt")
 			echo -e "\nTodays date is: $(date +%Y%m%d%H%M%S)\n";;
-		"pw_tail")
+		"1")
 			funcPwd;;
 		"pw")
 			echo -e "\nCurrent working directory: $(type pwd)\n";;
-		"ifc_first")
+		"ifc")
 			echo -e "\n$(ifconfig eth0)\n";;
-		"ifc_tail")
+		"2")
 			funcIfc;;
 		"show")
-			echo -e "\n$(ls)\n";;
+			echo -e "\n$(ls --file-type)\n";;
 		"n")
 			echo -e -n "\nFolder name: "
 			read FNAME
@@ -134,5 +129,4 @@ do
 			exit;;
                 *) echo -e "\nERROR>UNKNOWN COMMAND: $INPUT\nFor help, enter command: how\n";;
         esac
-
 done
