@@ -10,6 +10,11 @@ INPUT_ARR
 PWD_ARR="-L -P --help --version"
 PWD_ARR2=( $PWD_ARR )
 
+IFC_TAIL="-a -s -v"
+IFC_TAIL2=( $IFC_TAIL )
+IFC_INT="eth0 lo wlan0"
+IFC_INT2=( $IFC_INT )
+
 funcHelp(){
 	echo -e "\n>> pw"
 	echo -e "\tThis command prints your current working directory.\n\tYou are restricted to use any tail.\n\tIf tail is provided, it will be ignored.\n"
@@ -19,7 +24,7 @@ funcHelp(){
 	echo -e "\tDisplays current date and time in this\n\tformat: year, month, day, hour, minutes, seconds\n"
 }
 
-pwdFunc(){
+funcPwd(){
 	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
 	do
 		for ((x=0; x<"${#PWD_ARR2[@]}"; x++))
@@ -37,6 +42,52 @@ pwdFunc(){
 	done
 }
 
+funcIfc(){
+	echo -e "\nIFC function\n"
+	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
+        do
+                for ((x=0; x<"${#IFC_TAIL2[@]}"; x++))
+                do
+                        if [[ "${IFC_TAIL2[x]}" == "${INPUT_ARR[$z]}" ]];
+                        then
+                                echo -e "\nYou have no permission to use tail. Tail ignored."
+                                echo -e "Current working directory: $(pwd)\n"
+                                break
+                        else
+                                echo -e "\nERROR>UNKNOWN COMMAND: ${INPUT_ARR[$z]}\n"
+                                break
+                        fi
+                done
+        done
+
+
+}
+
+funcInput(){
+	if [[ "${INPUT_ARR[0]}" = "pw" ]];
+        then
+                if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
+                then
+                        INPUT="pw_tail"
+                elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
+                then
+                        INPUT="pw"
+                fi
+        elif [[ "${INPUT_ARR[0]}" = "ifc" ]];
+        then
+                if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
+                then
+                        INPUT="ifc_tail"
+                elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
+                then
+                        INPUT="ifc_first"
+		elif
+                fi
+
+        fi
+}
+
+
 clear
 cd "/home/$(whoami)"
 echo -e "\nWelcome $(whoami)!"
@@ -47,7 +98,9 @@ i=1 #Used to make an infinite while loop to keep the program runnning
 while [ $i -eq 1 ]
 do
 	echo -n "$(whoami):$(pwd)> "
+	
 	read INPUT
+
 	if [[ -z $INPUT ]];
 	then
 		INPUT="none"
@@ -55,26 +108,28 @@ do
 		INPUT_ARR=( $INPUT )
 	fi
 
-	if [[ "${INPUT_ARR[0]}" = "pw" ]];
-	then
-		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
-		then
-			INPUT="pw_tail"
-		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
-		then
-			INPUT="pw"
-		fi
-	elif [[ "${INPUT_ARR[0]}" = "ifc" ]];
-	then
-		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
-		then
-			INPUT="ifc_set"
-		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
-		then
-                	INPUT="ifc_first"
-		fi
+	funcInput
 
-	fi
+#	if [[ "${INPUT_ARR[0]}" = "pw" ]];
+#	then
+#		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
+#		then
+#			INPUT="pw_tail"
+#		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
+#		then
+#			INPUT="pw"
+#		fi
+#	elif [[ "${INPUT_ARR[0]}" = "ifc" ]];
+#	then
+#		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
+#		then
+#			INPUT="ifc_tail"
+#		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
+#		then
+ ##               	INPUT="ifc_first"
+#		fi
+#
+#	fi
 
 
 	case $INPUT in
@@ -83,11 +138,13 @@ do
 		"dt")
 			echo -e "\nTodays date is: $(date +%Y%m%d%H%M%S)\n";;
 		"pw_tail")
-			pwdFunc;;
+			funcPwd;;
 		"pw")
 			echo -e "\nCurrent working directory: $(type pwd)\n";;
 		"ifc_first")
 			echo -e "\n$(ifconfig eth0)\n";;
+		"ifc_tail")
+			funcIfc;;
 		"show")
 			echo -e "\n$(ls)\n";;
 		"n")
