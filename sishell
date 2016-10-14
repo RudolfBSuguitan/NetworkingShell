@@ -6,47 +6,59 @@
 
 INPUT
 INPUT_ARR
-PWD_ARR="-L -P --help --version"
-PWD_ARR2=( $PWD_ARR )
+temp
+run
 IFC_TAIL="-a -s -v"
 IFC_TAIL2=( $IFC_TAIL )
 IFC_INT="eth0 lo wlan0"
 IFC_INT2=( $IFC_INT )
 
 funcHelp(){
-	echo -e "\n>> pw"
-	echo -e "\tThis command prints your current working directory.\n\tYou are restricted to use any tail.\n\tIf tail is provided, it will be ignored.\n"
 	echo -e "\n>> close"
 	echo -e "\tThis command will close your terminal or\n\tlog you out if other user's account is being used\n"
 	echo -e "\n>> dt"
 	echo -e "\tDisplays current date and time in this\n\tformat: year, month, day, hour, minutes, seconds\n"
+        echo -e "\n>> pw"
+        echo -e "\tThis command prints your current working directory.\n\tYou are restricted to use any tail.\n\tIf tail is provided, it will be ignored.\n"
+        echo -e "\n>> ifc"
+        echo -e "\tDisplays network settings and configuration.\n"
 }
 
 funcPwd(){
 	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
 	do
-		for ((x=0; x<"${#PWD_ARR2[@]}"; x++))
-        	do
-			if [[ "${PWD_ARR2[x]}" == "${INPUT_ARR[$z]}" ]];
-                        then
-                                echo -e "\nYou have no permission to use tail. Tail ignored."
-                                echo -e "Current working directory: $(pwd)\n"
-				break
-                        else
-                               	echo -e "\nERROR>UNKNOWN COMMAND TAIL: ${INPUT_ARR[$z]}\n"
-                                break
-                        fi
-		done
-		#if exist in temp var
-		#else command not found
+		if test "${INPUT_ARR[$z]}"=="-L" -o "${INPUT_ARR[$z]}"=="-P" -o "${INPUT_ARR[$z]}"=="--help" -o "${INPUT_ARR[$z]}"=="--version"
+		then
+			echo -e "\nYou have no permission to use tail. Tail ignored."
+                        echo -e "Current working directory: $(pwd)\n"
+			break
+		else
+			echo -e "\nERROR>UNKNOWN COMMAND TAIL: ${INPUT_ARR[$z]}\n"
+			break
+		fi
 	done
-	#if statement to check if there are errors
 }
 
 funcIfc(){
-	echo -e "\nIFC function\n"
-	#if not equals tail then error break
-	#if equals tails and not repeated, temp1 then append
+        temp="ifconfig "
+	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
+        do
+                if test "${INPUT_ARR[$z]}" == "-a" -o "${INPUT_ARR[$z]}" == "-s" -o "${INPUT_ARR[$z]}" == "-v"
+                then
+			temp=$temp"${INPUT_ARR[$z]} "
+		elif test "${INPUT_ARR[$z]}" == "eth0" -o "${INPUT_ARR[$z]}" == "lo" -o "${INPUT_ARR[$z]}" == "wlan0"
+		then
+                        ##error check to make sure an interface is include and no repitition including with tails
+			temp=$temp"${INPUT_ARR[$z]}"
+                        run=$($temp)
+                        echo -e "\n$run\n"
+			break
+                else
+                        echo -e "\nERROR>UNKNOWN COMMAND TAIL or INTERFACE: ${INPUT_ARR[$z]}\n"
+                        break
+                fi
+        done
+        temp=""
 }
 
 funcInput(){
