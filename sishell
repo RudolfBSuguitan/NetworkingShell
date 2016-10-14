@@ -6,10 +6,8 @@
 
 INPUT
 INPUT_ARR
-
 PWD_ARR="-L -P --help --version"
 PWD_ARR2=( $PWD_ARR )
-
 IFC_TAIL="-a -s -v"
 IFC_TAIL2=( $IFC_TAIL )
 IFC_INT="eth0 lo wlan0"
@@ -35,32 +33,20 @@ funcPwd(){
                                 echo -e "Current working directory: $(pwd)\n"
 				break
                         else
-                               	echo -e "\nERROR>UNKNOWN COMMAND: ${INPUT_ARR[$z]}\n"
+                               	echo -e "\nERROR>UNKNOWN COMMAND TAIL: ${INPUT_ARR[$z]}\n"
                                 break
                         fi
 		done
+		#if exist in temp var
+		#else command not found
 	done
+	#if statement to check if there are errors
 }
 
 funcIfc(){
 	echo -e "\nIFC function\n"
-	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
-        do
-                for ((x=0; x<"${#IFC_TAIL2[@]}"; x++))
-                do
-                        if [[ "${IFC_TAIL2[x]}" == "${INPUT_ARR[$z]}" ]];
-                        then
-                                echo -e "\nYou have no permission to use tail. Tail ignored."
-                                echo -e "Current working directory: $(pwd)\n"
-                                break
-                        else
-                                echo -e "\nERROR>UNKNOWN COMMAND: ${INPUT_ARR[$z]}\n"
-                                break
-                        fi
-                done
-        done
-
-
+	#if not equals tail then error break
+	#if equals tails and not repeated, temp1 then append
 }
 
 funcInput(){
@@ -81,10 +67,8 @@ funcInput(){
                 elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
                 then
                         INPUT="ifc_first"
-		elif
                 fi
-
-        fi
+	 fi
 }
 
 
@@ -109,28 +93,6 @@ do
 	fi
 
 	funcInput
-
-#	if [[ "${INPUT_ARR[0]}" = "pw" ]];
-#	then
-#		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
-#		then
-#			INPUT="pw_tail"
-#		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
-#		then
-#			INPUT="pw"
-#		fi
-#	elif [[ "${INPUT_ARR[0]}" = "ifc" ]];
-#	then
-#		if [[ "${#INPUT_ARR[@]}" -gt "1" ]];
-#		then
-#			INPUT="ifc_tail"
-#		elif [[ "${#INPUT_ARR[@]}" -eq "1" ]];
-#		then
- ##               	INPUT="ifc_first"
-#		fi
-#
-#	fi
-
 
 	case $INPUT in
                 "how")
