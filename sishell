@@ -6,8 +6,9 @@
 
 INPUT
 INPUT_ARR
-temp
-run
+TEMP
+RUN
+declare -i COUNT=0
 IFC_TAIL="-a -s -v"
 IFC_TAIL2=( $IFC_TAIL )
 IFC_INT="eth0 lo wlan0"
@@ -31,34 +32,40 @@ funcPwd(){
 		then
 			echo -e "\nYou have no permission to use tail. Tail ignored."
                         echo -e "Current working directory: $(pwd)\n"
-			break
 		else
 			echo -e "\nERROR>UNKNOWN COMMAND TAIL: ${INPUT_ARR[$z]}\n"
-			break
 		fi
 	done
 }
 
 funcIfc(){
-        temp="ifconfig "
+        TEMP="ifconfig "
 	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
         do
                 if test "${INPUT_ARR[$z]}" == "-a" -o "${INPUT_ARR[$z]}" == "-s" -o "${INPUT_ARR[$z]}" == "-v"
                 then
-			temp=$temp"${INPUT_ARR[$z]} "
+			TEMP=$TEMP"${INPUT_ARR[$z]} "
 		elif test "${INPUT_ARR[$z]}" == "eth0" -o "${INPUT_ARR[$z]}" == "lo" -o "${INPUT_ARR[$z]}" == "wlan0"
 		then
-                        ##error check to make sure an interface is include and no repitition including with tails
-			temp=$temp"${INPUT_ARR[$z]}"
-                        run=$($temp)
-                        echo -e "\n$run\n"
-			break
+                        #error check to make sure an interface is include and no repitition including with tails
+			TEMP=$TEMP"${INPUT_ARR[$z]}"
+			((COUNT=$COUNT+1))
                 else
                         echo -e "\nERROR>UNKNOWN COMMAND TAIL or INTERFACE: ${INPUT_ARR[$z]}\n"
-                        break
+			return 1
                 fi
         done
-        temp=""
+
+	if [ "$COUNT" -ne 1 ];
+	then
+		echo -e "\nERROR WITH ifc COMMAND INTERFACE!\n";
+	elif [ "$COUNT" -eq 1 ];
+	then
+		RUN=$($TEMP)
+		echo -e "\n$RUN\n";
+	fi
+	COUNT=0
+        TEMP=""
 }
 
 funcInput(){
