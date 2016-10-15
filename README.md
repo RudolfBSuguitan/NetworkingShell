@@ -33,7 +33,7 @@ the steps bellow:
 **2.1 - Creating Users**
 - *If there are users avaible to set-up the custom shell, you can skip this step but 
 look at the following step (2.2) to make sure you have the right configuration.	
--To create a new user, enter the following commands:
+- To create a new user, enter the following commands:
 	- useradd -m username
 		- e.g. useradd -m rv
 		- Flag -m will create and set a home directory for the use and named as the user.
