@@ -28,6 +28,7 @@ the steps bellow:
 	- Then enter: git clone "https://github.com/RudolfBSuguitan/NetworkingShell.git"
 	- This repository will be cloned into the directory you are in.
 	- To update, go to the repo folder and enter the command: git pull
+	- You must be logged in as root in order to update.
 
 	2.1-Creating User**
 	*If there are users avaible to set-up the custom shell, you can skip this step but 
