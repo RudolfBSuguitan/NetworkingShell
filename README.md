@@ -18,16 +18,36 @@ command "ifconfig" will be ran and the data will be display on the terminal.
 Installing this shell for a user is quite simple and can be done by following
 the steps bellow:
 
-	###1-Clone Repository
+	**1-Clone Repository**
 	This is the most recommended way to install this custom shell and is 
 	done following the steps bellow:
 	- Open terminal and enter command: sudo su
 	- After entering your password, enter command: cd /
 		- This will bring you to your main directory
 		- Though, you can use your chosen directotory
-	- Enter: git clone "https://github.com/RudolfBSuguitan/NetworkingShell.git"
+	- Then enter: git clone "https://github.com/RudolfBSuguitan/NetworkingShell.git"
 	- This repository will be cloned into the directory you are in
 	- To update, go to the repo folder and enter the command: git pull
+
+	**2.1-Creating User**
+	*If there are users avaible to set-up the custom shell, you can skip this step but 
+	look at the following step (2.2) to make sure you have the right configuration.
+	
+	To create a new user, enter the following commands:
+	- useradd -m username
+		- e.g. useradd -m rv
+		- -m flag will create a home directory named as the user
+	- passwd username
+		- e.g. passwd rv
+		- this will create a password for that user
+
+	**2.2-User Shell Configuration
+	- This step will change the default shell to custom shell of a user
+	- Enter command: usermod -s /DirectoryOfClone/NetworkingShell/sishell username
+		- e.g. usermod -s /NetworkingShell/sishell rv
+		- This will configure your shell
+	- Alternatively, you can do this by accessing /etc/passwd using nano and as root.
+	- Find the user and at the end of the line of that user, enter the direcotory as above.
 	
 
   
