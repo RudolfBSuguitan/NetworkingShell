@@ -7,10 +7,10 @@
 #sudo passwd rv
 #sudo usermod -s /NetworkingShell/sishell
 
-INPUT
-INPUT_ARR
-TEMP
-RUN
+INPUT=""
+INPUT_ARR=""
+TEMP=""
+RUN=""
 declare -i COUNT=0
 HOME_DIR="/home/$(whoami)"
 
