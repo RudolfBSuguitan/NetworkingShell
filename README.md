@@ -26,7 +26,7 @@ the steps bellow:
 		- Though, you can use your chosen directory for the repository
 	- Then enter: git clone "https://github.com/RudolfBSuguitan/NetworkingShell.git"
 	- This repository will be cloned into the directory you are in.
-	- Inside, there should be a file named sishell which is the script for the custom shell
+	- This repository should contain a file named sishell which is the script for the custom shell
 	- To update, go to the repo folder and enter the command: git pull
 	- You must be logged in as root in order to update.
 
