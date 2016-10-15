@@ -3,26 +3,36 @@
 #Please read ReadMe file
 #etc/password to change shell or use -s
 #use -m flag to create home directory
+#useradd -m rv
+#sudo passwd rv
+#sudo usermod -s /NetworkingShell/sishell
 
 INPUT
 INPUT_ARR
 TEMP
 RUN
 declare -i COUNT=0
-IFC_TAIL="-a -s -v"
-IFC_TAIL2=( $IFC_TAIL )
-IFC_INT="eth0 lo wlan0"
-IFC_INT2=( $IFC_INT )
+HOME_DIR="/home/$(whoami)"
 
 funcHelp(){
 	echo -e "\n>> close"
-	echo -e "\tThis command will close your terminal or\n\tlog you out if other user's account is being used\n"
+	echo -e "\tThis command will close your terminal or\n\tlog you out if other user's account is being used."
+	echo -e "\n>> clr"
+	echo -e "\tClears content of the screen."
 	echo -e "\n>> dt"
-	echo -e "\tDisplays current date and time in this\n\tformat: year, month, day, hour, minutes, seconds\n"
+	echo -e "\tDisplays current date and time in this\n\tformat: year, month, day, hour, minutes, seconds."
+	echo -e "\n>> how"
+	echo -e "\tIt will display this information."
+	echo -e "\n>> ifc"
+        echo -e "\tDisplays network settings and configuration.\n\tifc inteface \n\t\teth0, lo, wlan\n\tifc -a -s -v interface"
+        echo -e "\t\t-a\tdisplay interface\n\t\t-s\tdisplay a short list\n\t\t-v\tmore verbose"
         echo -e "\n>> pw"
-        echo -e "\tThis command prints your current working directory.\n\tYou are restricted to use any tail.\n\tIf tail is provided, it will be ignored.\n"
-        echo -e "\n>> ifc"
-        echo -e "\tDisplays network settings and configuration.\n"
+        echo -e "\tThis command prints your current working directory.\n\tYou are restricted to use any tail.\n\tIf tail is provided, it will be ignored."
+	echo -e "\n>> show"
+	echo -e "\tDisplay your files and directories in current directory."
+	echo -e "\n>> ud"
+	echo -e "\tDisplays user information in format:\n\t\tuserID:groupID:username:groupname:iNodeOfHomeDirectory"
+	echo -e "\t-m\n\t\tTail to display information in more detail.\n"
 }
 
 funcPwd(){
@@ -68,6 +78,78 @@ funcIfc(){
         TEMP=""
 }
 
+funcUser(){
+	TEMP="id -u "
+	TEMP=$TEMP$whoami
+	RUN=$($TEMP)
+	echo -e -n "\n$RUN"
+
+	TEMP="id -g "
+	TEMP=$TEMP$whoami
+	RUN=$($TEMP)
+	echo -e -n ":$RUN"
+
+	TEMP="whoami"
+	RUN=$($TEMP)
+	echo -e -n ":$RUN"
+
+	TEMP="id -gn "
+	TEMP=$TEMP$whoami
+	RUN=$($TEMP)
+	echo -e -n ":$RUN"
+
+	TEMP="stat -c %i "
+	TEMP=$TEMP$HOME_DIR
+	RUN=$($TEMP)
+	echo -e -n ":$RUN\n\n"
+
+}
+
+funcUserTail(){
+	for ((z=1; z<"${#INPUT_ARR[@]}"; z++))
+        do
+		if test "${INPUT_ARR[$z]}" == "-m"
+		then
+			((COUNT=$COUNT+1))
+		else
+			echo -e "\nERROR>UNKNOWN COMMAND TAIL: ${INPUT_ARR[$z]}\n"
+			return 1
+		fi
+	done
+
+	if [ "$COUNT" -ne 1 ];
+        then
+                echo -e "\nERROR WITH ud COMMAND!\n";
+        elif [ "$COUNT" -eq 1 ];
+        then
+                TEMP="id -u "
+        	TEMP=$TEMP$whoami
+        	RUN=$($TEMP)
+        	printf "\nUser ID:\t$RUN"
+
+        	TEMP="id -g "
+        	TEMP=$TEMP$whoami
+        	RUN=$($TEMP)
+        	printf "\nGroup ID:\t$RUN"
+
+        	TEMP="whoami"
+        	RUN=$($TEMP)
+        	printf "\nUsername:\t$RUN"
+
+        	TEMP="id -gn "
+        	TEMP=$TEMP$whoami
+        	RUN=$($TEMP)
+        	printf "\nGroup Name:\t$RUN"
+
+        	TEMP="stat -c %i "
+        	TEMP=$TEMP$HOME_DIR
+        	RUN=$($TEMP)
+        	printf "\nHome iNode:\t$RUN\n\n"
+        fi
+        COUNT=0
+        TEMP=""
+}
+
 funcInput(){
 	if test "${INPUT_ARR[0]}" == "pw"
         then
@@ -83,12 +165,19 @@ funcInput(){
 			funcIfc
 			INPUT="none"
                 fi
-	 fi
+	elif test "${INPUT_ARR[0]}" == "ud"
+	then
+		if test "${#INPUT_ARR[@]}" -gt "1"
+                then
+                        funcUserTail
+                        INPUT="none"
+                fi
+	fi
 }
 
 
 clear
-cd "/home/$(whoami)"
+cd $HOME_DIR
 echo -e "\nWelcome $(whoami)!"
 echo -e "This is your custom shell"
 echo -e "For help, enter command: how\n"
@@ -96,7 +185,7 @@ echo -e "For help, enter command: how\n"
 i=1 #Used to make an infinite while loop to keep the program runnning
 while [ $i -eq 1 ]
 do
-	echo -n "$(whoami)@$(pwd):$> "
+	echo -e -n "$(whoami)@$(pwd)\n$ "
 
 	read INPUT
 
@@ -110,17 +199,16 @@ do
 
 	case $INPUT in
                 "how")
+			clear
 			funcHelp;;
 		"dt")
 			echo -e "\nTodays date is: $(date +%Y%m%d%H%M%S)\n";;
-		"1")
-			funcPwd;;
 		"pw")
 			echo -e "\nCurrent working directory: $(type pwd)\n";;
 		"ifc")
 			echo -e "\n$(ifconfig eth0)\n";;
-		"2")
-			funcIfc;;
+		"ud")
+			funcUser;;
 		"show")
 			echo -e "\n$(ls --file-type)\n";;
 		"n")
@@ -132,7 +220,10 @@ do
 		"none")
 			echo -n "";;
                 "close")
-			echo -e "\nGoodbye\n"
+			clear
+			echo -e "\n\tYou will now be logged out of your system, $(whoami)!\n"
+			sleep 2
+			reset
 			exit;;
                 *) echo -e "\nERROR>UNKNOWN COMMAND: $INPUT\nFor help, enter command: how\n";;
         esac
