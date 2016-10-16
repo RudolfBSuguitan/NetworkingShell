@@ -151,24 +151,18 @@ funcUserTail(){
 }
 
 funcInput(){
-	if test "${INPUT_ARR[0]}" == "pw"
-        then
-                if test "${#INPUT_ARR[@]}" -gt "1"
-                then
-			funcPwd
-			INPUT="none"
-                fi
-        elif test "${INPUT_ARR[0]}" == "ifc"
-        then
-                if test "${#INPUT_ARR[@]}" -gt "1"
-                then
-			funcIfc
-			INPUT="none"
-                fi
-	elif test "${INPUT_ARR[0]}" == "ud"
+	if test "${#INPUT_ARR[@]}" -gt "1"
 	then
-		if test "${#INPUT_ARR[@]}" -gt "1"
-                then
+		if test "${INPUT_ARR[0]}" == "pw"
+        	then
+                	funcPwd
+                        INPUT="none"
+        	elif test "${INPUT_ARR[0]}" == "ifc"
+        	then
+                	funcIfc
+                        INPUT="none"
+        	elif test "${INPUT_ARR[0]}" == "ud"
+        	then
                         funcUserTail
                         INPUT="none"
                 fi

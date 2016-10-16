@@ -40,6 +40,8 @@ look at the following step (2.2) to make sure you have the right configuration.
 	- passwd username
 		- e.g. passwd rv
 		- This will create a password for that user.
+- To switch user, enter the command: su username
+	- e.g. su rv
 
 **2.2 - User Shell Configuration**
 - This step will change the default shell to custom shell of a user.
@@ -50,3 +52,20 @@ look at the following step (2.2) to make sure you have the right configuration.
 	- Then, find the user and at the end of the line of that user, enter the direcotory as above.
 
 ##How It Works
+- The custom shell is ran when the particular user logs in. To start, that user should enter the command
+**how** which is similar to default **help** bash command. This will display all the commands (abbreviations)
+and the description or what these commands does. Tails or flags information are also included.
+
+- It is developed that when the user logs in, the current directory will automatically switch to that user's 
+home directory. This way, that user will have no access to other user accounts that can be found in /home/ directory.
+
+- When the user entered a command, the shell checks whether that command does or doesnt have a tail. If no tail 
+is provided, it will go through the case statement to run that command or call a function to run that command. 
+If the command contains tail(s), it will also go throught the case statement then call the fucntion which runs 
+that command after checking for any errors.
+
+- Users can log out of their system or the custom shell by entering the command: **close**. Then the user will
+see a logging out message and what that user have done or accesed within its account will not be seen by other users.
+
+- This shell also has error checking feature that displays warnings if what has been entered is unknown or
+unrecognized by the shell.
