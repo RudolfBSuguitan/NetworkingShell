@@ -78,6 +78,36 @@ funcIfc(){
         TEMP=""
 }
 
+createDirN(){
+        if test "${#INPUT_ARR[@]}" -gt "2"
+        then
+                echo -e "\nOnly one directory can be created at a time and\nspaces are not allowed.\n"
+                return 1
+        else
+                if [[ -d "${INPUT_ARR[1]}" ]]
+                then
+                        echo -e "\nCannot create directory. Directory exists!.\n"
+                        return 1
+                else
+                        mkdir "${INPUT_ARR[1]}"
+                        echo -e "\nDirectory ${INPUT_ARR[1]} created!.\n"
+                fi
+        fi
+}
+
+createDir(){
+        echo -e -n "\nEnter directory name: "
+        read DIR_NAME
+        if [[ -d $DIR_NAME ]]
+        then
+                echo -e "\nCannot create directory. Directory exists!.\n"
+                return 1
+        else
+                mkdir $DIR_NAME
+                echo -e "\nDirectory $DIR_NAME created!.\n"
+        fi
+}
+
 funcUser(){
 	TEMP="id -u "
 	TEMP=$TEMP$whoami
@@ -165,6 +195,10 @@ funcInput(){
         	then
                         funcUserTail
                         INPUT="none"
+                elif test "${INPUT_ARR[0]}" == "cdir"
+                then
+                        createDirN
+                        INPUT="none"
                 fi
 	fi
 }
@@ -205,10 +239,8 @@ do
 			funcUser;;
 		"show")
 			echo -e "\n$(ls --file-type)\n";;
-		"n")
-			echo -e -n "\nFolder name: "
-			read FNAME
-			mkdir $FNAME;;
+		"cdir")
+                        createDir;;
 		"clr")
 			clear;;
 		"none")
