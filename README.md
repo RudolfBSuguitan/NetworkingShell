@@ -26,7 +26,7 @@ the steps bellow:
 		- Though, you can use your chosen directory for the repository
 	- Then enter: git clone "https://github.com/RudolfBSuguitan/NetworkingShell.git"
 	- This repository will be cloned into the directory you are in.
-	- This repository should contain a file named sishell which is the script for the custom shell
+	- This repository should contain a file named customShell which is the script for the custom shell
 	- To update, go to the repo folder and enter the command: git pull
 	- You must be logged in as root in order to update.
 
@@ -45,8 +45,8 @@ look at the following step (2.2) to make sure you have the right configuration.
 
 **2.2 - User Shell Configuration**
 - This step will change the default shell to custom shell of a user.
-	- Enter command: usermod -s /DirectoryOfClone/NetworkingShell/sishell username	
-		- e.g. usermod -s /NetworkingShell/sishell rv
+	- Enter command: usermod -s /DirectoryOfClone/SystemsIntegration/customShell username	
+		- e.g. usermod -s /SystemsIntegration/customShell rv
 		- This will configure your shell.
 	- Alternatively, you can do this by accessing /etc/passwd using nano and as root.
 	- Then, find the user and at the end of the line of that user, enter the direcotory as above.
