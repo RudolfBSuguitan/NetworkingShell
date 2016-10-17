@@ -1,5 +1,5 @@
 #Systems Integration
-##Assignment 1 - Networking Shell
+##Assignment 1 - Custom Shell
 ###Author: Rudolf B Suguitan - C13460538
 
 ##Introduction
