@@ -52,7 +52,6 @@ funcIfc(){
 			TEMP=$TEMP"${INPUT_ARR[$z]} "
 		elif test "${INPUT_ARR[$z]}" == "eth0" -o "${INPUT_ARR[$z]}" == "lo" -o "${INPUT_ARR[$z]}" == "wlan0"
 		then
-                        #error check to make sure an interface is include and no repitition including with tails
 			TEMP=$TEMP"${INPUT_ARR[$z]}"
 			((COUNT=$COUNT+1))
                 else
@@ -77,15 +76,42 @@ createDir(){
         if test "${#INPUT_ARR[@]}" -gt "2"
         then
                 echo -e "\nOnly one directory can be created at a time and\nspaces are not allowed.\n"
-                return 1
         else
                 if [[ -e "${INPUT_ARR[1]}" ]]
                 then
                         echo -e "\nCannot create directory. Directory or file exists!.\n"
-                        return 1
                 else
-                        mkdir "${INPUT_ARR[1]}"
-                        echo -e "\nDirectory ${INPUT_ARR[1]} created!.\n"
+			if [[ "${INPUT_ARR[1]}" != *"$HOME_DIR"* ]]
+                        then
+                                TEMP="${INPUT_ARR[1]}"
+                                TEMP="$(pwd)/"$TEMP
+
+                                if [[ -e $TEMP ]]
+                                then
+                                        echo -e "\nCannot create directory. Directory or file exists!.\n"
+                                else
+					mkdir $TEMP &> /dev/null
+                                        if [ "$?" -eq "0" ]
+                                        then
+                                                echo -e "\nDirectory ${INPUT_ARR[1]} created.\n"
+                                        else
+                                                echo -e "\nError creating directory!\n"
+                                        fi
+                                fi
+                        else
+                                if [[ -e "${INPUT_ARR[1]}" ]]
+                                then
+                                        echo -e "\nCannot create directory. Directory or file exists!.\n"
+                                else
+					mkdir "${INPUT_ARR[1]}" &> /dev/null
+                                        if [ "$?" -eq "0" ]
+                                        then
+                                                echo -e "\nDirectory ${INPUT_ARR[1]} created.\n"
+                                        else
+                                                echo -e "\nError creating directory!\n"
+                                      	fi
+				fi
+			fi
                 fi
         fi
 }
@@ -94,15 +120,43 @@ createFile(){
         if test "${#INPUT_ARR[@]}" -gt "2"
         then
                 echo -e "\nOnly one file can be created at a time and\nspaces are not allowed.\n"
-                return 1
         else
                 if [[ -e "${INPUT_ARR[1]}" ]]
                 then
                         echo -e "\nCannot create file. File or directory exists!.\n"
-                        return 1
                 else
-                        touch "${INPUT_ARR[1]}"
-                        echo -e "\nFile ${INPUT_ARR[1]} created!.\n"
+			if [[ "${INPUT_ARR[1]}" != *"$HOME_DIR"* ]]
+                        then
+                                TEMP="${INPUT_ARR[1]}"
+                                TEMP="$(pwd)/"$TEMP
+
+                                if [[ -e $TEMP ]]
+                                then
+                                        echo -e "\nCannot create file. File or directory exists!.\n"
+                                else
+                                        touch $TEMP &> /dev/null
+					if [ "$?" -eq "0" ]
+					then
+						echo -e "\nFile ${INPUT_ARR[1]} created!!!.\n"
+					else
+						echo -e "\nError creating file!\n"
+					fi
+                                fi
+                        else
+                                if [[ -e "${INPUT_ARR[1]}" ]]
+                                then
+                                        echo -e "\nCannot create file. File or directory exists!.\n"
+                                else
+					touch "${INPUT_ARR[1]}" &> /dev/null
+					if [ "$?" -eq "0" ]
+                			then
+						echo -e "\nFile ${INPUT_ARR[1]} created!!.\n"
+					else
+						echo -e "\nError creating file!\n"
+					fi
+                                fi
+                        fi
+
                 fi
         fi
 }
@@ -115,13 +169,25 @@ editFile(){
         else
                 if [[ -e "${INPUT_ARR[1]}" ]]
                 then
-                        if [[ -d "${INPUT_ARR[1]}" ]]
-			then
-				echo -e "\nCannot edit directories!.\n"
-                        	return 1
-			else
-				nano "${INPUT_ARR[1]}"
-			fi
+			if [[ "${INPUT_ARR[1]}" != *"$HOME_DIR"* ]]
+                	then
+                        	TEMP="${INPUT_ARR[1]}"
+                        	TEMP="$(pwd)/"$TEMP
+
+                        	if [[ -e $TEMP && ! -d $TEMP ]]
+                        	then
+                                	nano $TEMP
+                        	else
+                                	echo -e "\nERROR! No such file:  $TEMP\n"
+                        	fi
+                	else
+				if [[ -e "${INPUT_ARR[1]}" && ! -d "${INPUT_ARR[1]}" ]]
+                                then
+                                        nano "${INPUT_ARR[1]}"
+                                else
+                                        echo -e "\nERROR! No such file:  ${INPUT_ARR[1]}\n"
+                                fi
+                	fi
 		else
 			echo -e "\nFile does not exist!.\n"
 		fi
@@ -219,12 +285,7 @@ directoryGo(){
 
 			if [[ -d $TEMP ]]
         		then
-				if [[ $TEMP != *"$HOME_DIR"* ]]
-                		then
-					echo -e "\nYou can only navigate within your home directory!\n"
-				else
-					cd $TEMP
-				fi
+				cd $TEMP
 			else
 				echo -e "\nThis is not a directory: $TEMP\n"
 			fi
