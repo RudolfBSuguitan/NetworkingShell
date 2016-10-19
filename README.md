@@ -23,7 +23,6 @@ the steps bellow:
 	- Open terminal and enter command: sudo su
 	- After entering your password, enter command: cd /
 		- This will bring you to your main directory
-		- Though, you can use your chosen directory for the repository
 	- Then enter: git clone "https://github.com/RudolfBSuguitan/SystemsIntegration.git"
 	- This repository will be cloned into the directory you are in.
 	- This repository should contain a file named customShell which is the script for the custom shell

@@ -274,26 +274,26 @@ funcDel(){
 
 #displays some user information in one line and less detail
 funcUser(){
-	TEMP="id -u "
+	TEMP="/SystemsIntegration/bin/id -u "
 	TEMP=$TEMP$whoami
 	RUN=$($TEMP)
 	echo -e -n "\n$RUN"
 
-	TEMP="id -g "
+	TEMP="/SystemsIntegration/bin/id -g "
 	TEMP=$TEMP$whoami
 	RUN=$($TEMP)
 	echo -e -n ":$RUN"
 
-	TEMP="whoami"
+	TEMP="/SystemsIntegration/bin/whoami"
 	RUN=$($TEMP)
 	echo -e -n ":$RUN"
 
-	TEMP="id -gn "
+	TEMP="/SystemsIntegration/bin/id -gn "
 	TEMP=$TEMP$whoami
 	RUN=$($TEMP)
 	echo -e -n ":$RUN"
 
-	TEMP="stat -c %i "
+	TEMP="/SystemsIntegration/bin/stat -c %i "
 	TEMP=$TEMP$HOME_DIR
 	RUN=$($TEMP)
 	echo -e -n ":$RUN\n\n"
@@ -317,26 +317,26 @@ funcUserTail(){
                 echo -e "\nERROR WITH ud COMMAND!\n";
         elif [ "$COUNT" -eq 1 ];
         then
-                TEMP="id -u "
+                TEMP="/SystemsIntegration/bin/id -u "
         	TEMP=$TEMP$whoami
         	RUN=$($TEMP)
         	printf "\nUser ID:\t$RUN"
 
-        	TEMP="id -g "
+        	TEMP="/SystemsIntegration/bin/id -g "
         	TEMP=$TEMP$whoami
         	RUN=$($TEMP)
         	printf "\nGroup ID:\t$RUN"
 
-        	TEMP="whoami"
+        	TEMP="/SystemsIntegration/bin/whoami"
         	RUN=$($TEMP)
         	printf "\nUsername:\t$RUN"
 
-        	TEMP="id -gn "
+        	TEMP="/SystemsIntegration/bin/id -gn "
         	TEMP=$TEMP$whoami
         	RUN=$($TEMP)
         	printf "\nGroup Name:\t$RUN"
 
-        	TEMP="stat -c %i "
+        	TEMP="/SystemsIntegration/bin/stat -c %i "
         	TEMP=$TEMP$HOME_DIR
         	RUN=$($TEMP)
         	printf "\nHome iNode:\t$RUN\n\n"
@@ -452,9 +452,9 @@ do	#displays user and directory line in default shell. tput is used to change co
 			clear
 			funcHelp;;
 		"dt")
-			echo -e "\nTodays date is: $(date +%Y%m%d%H%M%S)\n";;
+			echo -e "\nTodays date is: $(/SystemsIntegration/bin/date +%Y%m%d%H%M%S)\n";;
 		"pw")
-			echo -e "\nCurrent working directory: $(pwd)\n";;
+			echo -e "\nCurrent working directory: $(/bin/pwd)\n";;
 		"ifc")
 			echo -e "\n$(ifconfig eth0)\n";;
 		"ud")
