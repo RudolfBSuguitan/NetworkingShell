@@ -434,7 +434,7 @@ echo -e "For help, enter command: how\n"
 i=1 #Used to make an infinite while loop to keep the program runnning
 while [ $i -eq 1 ]
 do	#displays user and directory line in default shell. tput is used to change color
-	echo -e -n "$(tput setaf 5)$(whoami)$(tput sgr0)@$(tput setaf 6)$(pwd)$(tput sgr0)\n$ "
+	echo -e -n "$(tput setaf 5)$(whoami)$(tput sgr0)@$(tput setaf 6)$(pwd)$(tput sgr0):~$ "
 	#wait for user input
 	read INPUT
 	#if null, ie pressed enter
